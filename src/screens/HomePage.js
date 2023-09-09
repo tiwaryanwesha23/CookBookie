@@ -7,7 +7,7 @@ const HomePage = () => {
     const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    axios.get('http://localhost:3000/api/recipes')
+    axios.get('https://recipe-app-server-o5kh.onrender.com/api/recipes')
       .then((response) => {
         setRecipes(response.data);
         setLoading(false);

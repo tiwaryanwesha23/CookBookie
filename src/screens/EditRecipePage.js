@@ -21,7 +21,7 @@ const EditRecipePage = () => {
 
     useEffect(() => {
         axios
-            .get(`http://localhost:3000/api/recipes/${id}`)
+            .get(`https://recipe-app-server-o5kh.onrender.com/api/recipes/${id}`)
             .then((response) => {
                 const { title, ingredients, instructions, image } = response.data;
                 setFormData({
@@ -87,7 +87,7 @@ const EditRecipePage = () => {
 
         // Send a PUT request to update the recipe
         axios
-            .put(`http://localhost:3000/api/recipes/${id}`, recipeData)
+            .put(`https://recipe-app-server-o5kh.onrender.com/api/recipes/${id}`, recipeData)
             .then(() => {
                 console.log('Recipe updated');
                 toast.success('Recipe updated successfully', {

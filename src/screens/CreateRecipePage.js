@@ -61,7 +61,7 @@ const CreateRecipePage = () => {
 
         // Send a POST request to create a new recipe
         axios
-            .post('http://localhost:3000/api/recipes', recipeData)
+            .post('https://recipe-app-server-o5kh.onrender.com/api/recipes', recipeData)
             .then((response) => {
                 console.log(response.data);
                 toast.success('Recipe created successfully', {

@@ -11,7 +11,7 @@ const RecipeDetail = () => {
   
   useEffect(() => {
     axios
-      .get(`http://localhost:3000/api/recipes/${id}`)
+      .get(`https://recipe-app-server-o5kh.onrender.com/api/recipes/${id}`)
       .then((response) => {
         setRecipe(response.data);
         setLoading(false);
@@ -25,7 +25,7 @@ const RecipeDetail = () => {
   const handleDeleteRecipe = () => {
     if (window.confirm('Are you sure you want to delete this recipe?')) {  
       axios
-        .delete(`http://localhost:3000/api/recipes/${id}`)
+        .delete(`https://recipe-app-server-o5kh.onrender.com/api/recipes/${id}`)
         .then(() => {
           toast.success('Recipe deleted successfully', {
             duration: 3000,
