@@ -1,20 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { toast } from 'react-hot-toast';
-import { Router, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
 const EditRecipePage = () => {
     const initialFormData = {
         title: '',
         ingredients: '',
         instructions: '',
+        type: '', // Initialize type as an empty string
         imageType: 'url',
         imageUrl: '',
         imageFile: null,
     };
 
     const [formData, setFormData] = useState(initialFormData);
-    const [, setLoading] = useState(true);
     const [submitting, setSubmitting] = useState(false);
 
     const { id } = useParams();
@@ -23,20 +23,19 @@ const EditRecipePage = () => {
         axios
             .get(`https://recipe-app-server-o5kh.onrender.com/api/recipes/${id}`)
             .then((response) => {
-                const { title, ingredients, instructions, image } = response.data;
+                const { title, ingredients, instructions, image, type } = response.data;
                 setFormData({
                     title,
                     ingredients: ingredients.join(', '),
                     instructions,
+                    type, // Set the type from the response data
                     imageType: image.startsWith('data:image') ? 'file' : 'url',
                     imageUrl: image.startsWith('data:image') ? '' : image,
                     imageFile: null,
                 });
-                setLoading(false);
             })
             .catch((error) => {
                 console.error('Error fetching recipe:', error);
-                setLoading(false);
             });
     }, [id]);
 
@@ -82,6 +81,7 @@ const EditRecipePage = () => {
             title: formData.title,
             ingredients: formData.ingredients,
             instructions: formData.instructions,
+            type: formData.type, // Include the type in the recipe data
             image: imageData,
         };
 
@@ -94,7 +94,8 @@ const EditRecipePage = () => {
                     duration: 3000,
                 });
                 setSubmitting(false);
-                Router.push(`/recipe/${id}`);
+                // Redirect to the recipe details page after update
+                window.location.href = `/recipe/${id}`;
             })
             .catch((error) => {
                 console.error('Error updating recipe:', error);
@@ -151,6 +152,25 @@ const EditRecipePage = () => {
                             required
                         ></textarea>
                     </div>
+                    <div className="mb-4">
+                        <label className="block text-gray-800 font-semibold mb-2" htmlFor="type">
+                            Type:
+                        </label>
+                        <select
+                            id="type"
+                            name="type"
+                            value={formData.type}
+                            onChange={handleChange}
+                            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-blue-500"
+                            required
+                        >
+                            <option value="">Select a type</option>
+                            <option value="breakfast">Breakfast</option>
+                            <option value="maincourse">Main Course</option>
+                            <option value="dessert">Dessert</option>
+                        </select>
+                    </div>
+                    {/* ... (remaining form fields) */}
 
                     {/* Toggle between image URL and file upload */}
                     <div className="mb-4">
@@ -216,6 +236,7 @@ const EditRecipePage = () => {
                             />
                         </div>
                     )}
+
                     <div className="text-center">
                         <button
                             type="submit"

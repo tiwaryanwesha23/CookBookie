@@ -7,6 +7,7 @@ const CreateRecipePage = () => {
         title: '',
         ingredients: '',
         instructions: '',
+        type: '',
         imageType: 'url',
         imageUrl: '',
         imageFile: null,
@@ -53,28 +54,29 @@ const CreateRecipePage = () => {
 
     const sendRecipeData = (imageData) => {
         const recipeData = {
-            title: formData.title,
-            ingredients: formData.ingredients,
-            instructions: formData.instructions,
-            image: imageData,
+          title: formData.title,
+          ingredients: formData.ingredients,
+          instructions: formData.instructions,
+          type: formData.type,
+          image: imageData,
         };
-
-        // Send a POST request to create a new recipe
+      
         axios
-            .post('https://recipe-app-server-o5kh.onrender.com/api/recipes', recipeData)
-            .then((response) => {
-                console.log(response.data);
-                toast.success('Recipe created successfully', {
-                    duration: 3000,
-                });
-                setFormData(initialFormData);
-                setSubmitting(false);
-            })
-            .catch((error) => {
-                toast.error('Error creating recipe');
-                setSubmitting(false);
+          .post('https://recipe-app-server-o5kh.onrender.com/api/recipes', recipeData)
+          .then((response) => {
+            console.log(response.data);
+            toast.success('Recipe created successfully', {
+              duration: 3000,
             });
-    };
+            setFormData(initialFormData);
+            setSubmitting(false);
+          })
+          .catch((error) => {
+            console.error('Error creating recipe:', error);
+            setSubmitting(false);
+          });
+      };
+      
 
     return (
         <div className="bg-gray-100 py-10">
@@ -126,6 +128,25 @@ const CreateRecipePage = () => {
                             required
                         ></textarea>
                     </div>
+                    <div className="mb-4">
+  <label className="block text-gray-800 font-semibold mb-2" htmlFor="type">
+    Type:
+  </label>
+  <select
+    id="type"
+    name="type"
+    value={formData.type}
+    onChange={handleChange}
+    className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-blue-500"
+    required
+  >
+    <option value="">Select a type</option>
+    <option value="breakfast">Breakfast</option>
+    <option value="maincourse">Main Course</option>
+    <option value="dessert">Dessert</option>
+  </select>
+</div>
+
 
                     {/* Toggle between image URL and file upload */}
                     <div className="mb-4">
